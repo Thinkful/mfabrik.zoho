@@ -286,6 +286,8 @@ class CRM(Connection):
         
     def get_contacts_for_potential(self, potential_id):
         return self.get_related_records('ContactRoles', 'Potentials', potential_id)
+    def get_potentials_for_contact(self, contact_id):
+        return self.get_related_records('Potentials', 'Contacts', contact_id)       
     def get_funnel_stages_for_potential(self, potential_id):
         return self.get_related_records('PotStageHistory', 'Potentials', potential_id)
 
