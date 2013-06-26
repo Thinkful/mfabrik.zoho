@@ -156,7 +156,10 @@ class CRM(Connection):
     def update_leads(self, leads, extra_post_parameters={}):
         extra_post_parameters['version'] = 4
         return self._insert_records("Leads", "updateRecords", leads, extra_post_parameters)
-    
+    def update_potentials(self, potentials, extra_post_parameters={}):
+        extra_post_parameters['version'] = 4
+        return self._insert_records("Potentials", "updateRecords", potentials, extra_post_parameters)
+
     def get_inserted_records(self, response):
         """
         @return: List of record ids which were created by insert recoreds
