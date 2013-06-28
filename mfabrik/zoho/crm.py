@@ -299,7 +299,7 @@ class CRM(Connection):
             **kwargs):
         return self.search_records("Leads", select_columns, search_condition, **kwargs)
     def search_contacts(self, search_condition,
-            select_columns='contacts(First Name,Last Name,Email,Contact Type,Email Opt Out,Signed up at,Created Time,Stripe Customer ID)', 
+            select_columns='contacts(First Name,Last Name,Email,Thinkful login,Contact Type,Email Opt Out,Signed up at,Created Time,Stripe Customer ID)', 
             **kwargs):
         return self.search_records("Contacts", select_columns, search_condition, **kwargs)
     def search_potentials(self, search_condition,
