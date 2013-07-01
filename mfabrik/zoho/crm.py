@@ -277,7 +277,7 @@ class CRM(Connection):
             **kwargs):
         return self.get_records("Contacts", select_columns, **kwargs)
     def get_potentials(self, 
-            select_columns='potentials(Contact Name,Signed up at,Closing Date,Stage,Lead Source,Exact lead source)', 
+            select_columns='potentials(Contact Name,Signed up at,Closing Date,Stage,Lead Source,Exact lead source,Payer)', 
             **kwargs):
         return self.get_records("Potentials", select_columns, **kwargs)
     
@@ -285,6 +285,10 @@ class CRM(Connection):
             select_columns='contacts(First Name,Last Name,Email,Contact Type,Email Opt Out,Signed up at,Created Time,Stripe Customer ID)',
             **kwargs):
         return self.get_record_by_id(contact_id, "Contacts", select_columns, **kwargs)
+    def get_potential_by_id(self, potential_id,
+            select_columns='potentials(Contact Name,Signed up at,Closing Date,Stage,Lead Source,Exact lead source,Payer)', 
+            **kwargs):
+        return self.get_record_by_id(potential_id, "Potentials", select_columns, **kwargs)
 
         
     def get_contacts_for_potential(self, potential_id):
