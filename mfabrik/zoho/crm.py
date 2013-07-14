@@ -269,7 +269,7 @@ class CRM(Connection):
         return self._parse_json_response(response, record_name)
 
     def get_leads(self, 
-            select_columns='leads(Email,First Name,Last Name,Lead Status,Email Opt Out,Signed up at,Created Time)', 
+            select_columns='leads(Email,First Name,Last Name,Lead Status,Lead Source,Exact lead source,Email Opt Out,Signed up at,Created Time)', 
             **kwargs):
         return self.get_records("Leads", select_columns, **kwargs)
     def get_contacts(self, 
