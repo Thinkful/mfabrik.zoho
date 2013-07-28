@@ -50,9 +50,9 @@ class CRM(Connection):
             print "Got error"
             for message in error.findall("message"):
                 raise ZohoException(message.text)
-        
+
         return True
-    
+
     def _xmlize_record(self, element_name, records):
         root = Element(element_name)
 
@@ -64,16 +64,17 @@ class CRM(Connection):
             root.append(row)
 
             assert type(lead) == dict, "Leads must be dictionaries inside a list, got:" + str(type(lead))
-        
+
             for key, value in lead.items():
                 # <FL val="Lead Source">Web Download</FL>
                 # <FL val="First Name">contacto 1</FL>
                 fl = Element("fl", val=key)
                 fl.text = value
                 row.append(fl)
-                
+
             no += 1
-            return root
+
+        return root
 
     def _parse_json_response(self, response, record_name):
         # raw data looks like {'response': {'result': {'Leads': {'row': 
