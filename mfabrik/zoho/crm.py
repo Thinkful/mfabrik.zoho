@@ -50,9 +50,9 @@ class CRM(Connection):
             print "Got error"
             for message in error.findall("message"):
                 raise ZohoException(message.text)
-        
+
         return True
-    
+
     def _xmlize_record(self, element_name, records):
         root = Element(element_name)
 
@@ -64,16 +64,17 @@ class CRM(Connection):
             root.append(row)
 
             assert type(lead) == dict, "Leads must be dictionaries inside a list, got:" + str(type(lead))
-        
+
             for key, value in lead.items():
                 # <FL val="Lead Source">Web Download</FL>
                 # <FL val="First Name">contacto 1</FL>
                 fl = Element("fl", val=key)
                 fl.text = value
                 row.append(fl)
-                
+
             no += 1
-            return root
+
+        return root
 
     def _parse_json_response(self, response, record_name):
         # raw data looks like {'response': {'result': {'Leads': {'row': 
@@ -269,7 +270,7 @@ class CRM(Connection):
         return self._parse_json_response(response, record_name)
 
     def get_leads(self, 
-            select_columns='leads(Email,First Name,Last Name,Lead Status,Email Opt Out,Signed up at,Created Time)', 
+            select_columns='leads(Email,First Name,Last Name,Lead Status,Lead Source,Exact lead source,Email Opt Out,Signed up at,Created Time)', 
             **kwargs):
         return self.get_records("Leads", select_columns, **kwargs)
     def get_contacts(self, 
@@ -277,7 +278,7 @@ class CRM(Connection):
             **kwargs):
         return self.get_records("Contacts", select_columns, **kwargs)
     def get_potentials(self, 
-            select_columns='potentials(Contact Name,Signed up at,Closing Date,Stage,Lead Source,Exact lead source)', 
+            select_columns='potentials(Contact Name,Signed up at,Closing Date,Course,Stage,Lead Source,Exact lead source,Payer)', 
             **kwargs):
         return self.get_records("Potentials", select_columns, **kwargs)
     
@@ -285,6 +286,10 @@ class CRM(Connection):
             select_columns='contacts(First Name,Last Name,Email,Contact Type,Email Opt Out,Signed up at,Created Time,Stripe Customer ID,Thinkful Login)',
             **kwargs):
         return self.get_record_by_id(contact_id, "Contacts", select_columns, **kwargs)
+    def get_potential_by_id(self, potential_id,
+            select_columns='potentials(Contact Name,Signed up at,Closing Date,Course,Stage,Lead Source,Exact lead source,Payer)', 
+            **kwargs):
+        return self.get_record_by_id(potential_id, "Potentials", select_columns, **kwargs)
 
         
     def get_contacts_for_potential(self, potential_id):
@@ -299,7 +304,7 @@ class CRM(Connection):
             **kwargs):
         return self.search_records("Leads", select_columns, search_condition, **kwargs)
     def search_contacts(self, search_condition,
-            select_columns='contacts(First Name,Last Name,Email,Contact Type,Email Opt Out,Signed up at,Created Time,Stripe Customer ID,Thinkful Login)', 
+            select_columns='contacts(First Name,Last Name,Email,Thinkful login,Contact Type,Email Opt Out,Signed up at,Created Time,Stripe Customer ID)', 
             **kwargs):
         return self.search_records("Contacts", select_columns, search_condition, **kwargs)
     def search_potentials(self, search_condition,
