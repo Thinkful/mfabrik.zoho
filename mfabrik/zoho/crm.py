@@ -306,11 +306,38 @@ class CRM(Connection):
     def search_contacts(self, search_condition,
             select_columns='contacts(First Name,Last Name,Email,Thinkful login,Contact Type,Email Opt Out,Signed up at,Created Time,Stripe Customer ID)', 
             **kwargs):
+        if 'Email' in search_condition:
+            raise Exception("Save the Zoho tokens! Use search_contacts_by_email!")
         return self.search_records("Contacts", select_columns, search_condition, **kwargs)
     def search_potentials(self, search_condition,
             select_columns='potentials(Contact Name,Signed up at,Closing Date,Stage,Lead Source,Exact lead source)', 
             **kwargs):
         return self.search_records("Potentials", select_columns, search_condition, **kwargs)
+
+    def search_by_pdc(self, record_name, select_columns, column_name, column_value, 
+        from_index=None, to_index=None, parameters={}):
+        self.ensure_opened()
+        
+        post_params = {
+            "selectColumns" : select_columns,
+            "searchColumn" : column_name,
+            "searchValue" : column_value,
+            "newFormat" : 2,
+        }
+        if from_index:
+            post_params['fromIndex'] = from_index
+        if to_index:
+            post_params['toIndex'] = to_index
+
+        post_params.update(parameters)
+
+        response = self.do_call(
+            "https://crm.zoho.com/crm/private/json/%s/getSearchRecordsByPDC" % (record_name), post_params)
+        return self._parse_json_response(response, record_name)
+
+    def search_contacts_by_email(self, email, 
+            select_columns='contacts(First Name,Last Name,Email,Thinkful login,Contact Type,Email Opt Out,Signed up at,Created Time,Stripe Customer ID)'):
+        return self.search_by_pdc('Contacts', select_columns, 'email', email)
 
     def delete_record(self, id, parameters={}):
         """ Delete one record from Zoho CRM.
