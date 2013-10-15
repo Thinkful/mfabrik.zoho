@@ -274,7 +274,7 @@ class CRM(Connection):
             **kwargs):
         return self.get_records("Leads", select_columns, **kwargs)
     def get_contacts(self, 
-            select_columns='contacts(First Name,Last Name,Email,Contact Type,Email Opt Out,Signed up at,Created Time,Stripe Customer ID,Thinkful login)', 
+            select_columns='contacts(First Name,Last Name,Email,Contact Type,Email Opt Out,Signed up at,Created Time,Stripe Customer ID,Thinkful login,Phone)',
             **kwargs):
         return self.get_records("Contacts", select_columns, **kwargs)
     def get_potentials(self, 
@@ -283,7 +283,7 @@ class CRM(Connection):
         return self.get_records("Potentials", select_columns, **kwargs)
     
     def get_contact_by_id(self, contact_id,
-            select_columns='contacts(First Name,Last Name,Email,Contact Type,Email Opt Out,Signed up at,Created Time,Stripe Customer ID,Thinkful login)',
+            select_columns='contacts(First Name,Last Name,Email,Contact Type,Email Opt Out,Signed up at,Created Time,Stripe Customer ID,Thinkful login,Phone)',
             **kwargs):
         return self.get_record_by_id(contact_id, "Contacts", select_columns, **kwargs)
     def get_potential_by_id(self, potential_id,
@@ -304,7 +304,7 @@ class CRM(Connection):
             **kwargs):
         return self.search_records("Leads", select_columns, search_condition, **kwargs)
     def search_contacts(self, search_condition,
-            select_columns='contacts(First Name,Last Name,Email,Thinkful login,Contact Type,Email Opt Out,Signed up at,Created Time,Stripe Customer ID)', 
+            select_columns='contacts(First Name,Last Name,Email,Contact Type,Email Opt Out,Signed up at,Created Time,Stripe Customer ID,Thinkful login,Phone)', 
             **kwargs):
         if 'Email' in search_condition:
             raise Exception("Save the Zoho tokens! Use search_contacts_by_email!")
