@@ -22,6 +22,11 @@ except ImportError:
    
 from core import Connection, ZohoException, decode_json
 
+
+SELECT_COLUMNS_POTENTIALS = 'potentials(Contact Name,Signed up at,Closing Date,Course,Stage,Lead Source,Exact lead source,Payer,Discount code)'
+SELECT_COLUMNS_CONTACTS = 'contacts(First Name,Last Name,Email,Contact Type,Email Opt Out,Signed up at,Created Time,Stripe Customer ID,Thinkful login,Phone)'
+SELECT_COLUMNS_LEADS = 'leads(Email,First Name,Last Name,Lead Status,Lead Source,Exact lead source,Email Opt Out,Signed up at,Created Time)'
+
 class CRM(Connection):
     """ CRM specific Zoho APIs mapped to Python """
     
@@ -269,28 +274,17 @@ class CRM(Connection):
             "https://crm.zoho.com/crm/private/json/%s/getSearchRecords" % (record_name), post_params)
         return self._parse_json_response(response, record_name)
 
-    def get_leads(self, 
-            select_columns='leads(Email,First Name,Last Name,Lead Status,Lead Source,Exact lead source,Email Opt Out,Signed up at,Created Time)', 
-            **kwargs):
+    def get_leads(self, select_columns=SELECT_COLUMNS_LEADS, **kwargs):
         return self.get_records("Leads", select_columns, **kwargs)
-    def get_contacts(self, 
-            select_columns='contacts(First Name,Last Name,Email,Contact Type,Email Opt Out,Signed up at,Created Time,Stripe Customer ID,Thinkful login,Phone)',
-            **kwargs):
+    def get_contacts(self, select_columns=SELECT_COLUMNS_CONTACTS, **kwargs):
         return self.get_records("Contacts", select_columns, **kwargs)
-    def get_potentials(self, 
-            select_columns='potentials(Contact Name,Signed up at,Closing Date,Course,Stage,Lead Source,Exact lead source,Payer)', 
-            **kwargs):
+    def get_potentials(self, select_columns=SELECT_COLUMNS_POTENTIALS, **kwargs):
         return self.get_records("Potentials", select_columns, **kwargs)
     
-    def get_contact_by_id(self, contact_id,
-            select_columns='contacts(First Name,Last Name,Email,Contact Type,Email Opt Out,Signed up at,Created Time,Stripe Customer ID,Thinkful login,Phone)',
-            **kwargs):
+    def get_contact_by_id(self, contact_id, select_columns=SELECT_COLUMNS_CONTACTS, **kwargs):
         return self.get_record_by_id(contact_id, "Contacts", select_columns, **kwargs)
-    def get_potential_by_id(self, potential_id,
-            select_columns='potentials(Contact Name,Signed up at,Closing Date,Course,Stage,Lead Source,Exact lead source,Payer)', 
-            **kwargs):
+    def get_potential_by_id(self, potential_id, select_columns=SELECT_COLUMNS_POTENTIALS, **kwargs):
         return self.get_record_by_id(potential_id, "Potentials", select_columns, **kwargs)
-
         
     def get_contacts_for_potential(self, potential_id):
         return self.get_related_records('ContactRoles', 'Potentials', potential_id)
@@ -299,19 +293,13 @@ class CRM(Connection):
     def get_funnel_stages_for_potential(self, potential_id):
         return self.get_related_records('PotStageHistory', 'Potentials', potential_id)
 
-    def search_leads(self, search_condition,
-            select_columns='leads(Email,First Name,Last Name,Lead Status,Email Opt Out,Signed up at,Created Time)', 
-            **kwargs):
+    def search_leads(self, search_condition, select_columns=SELECT_COLUMNS_LEADS, **kwargs):
         return self.search_records("Leads", select_columns, search_condition, **kwargs)
-    def search_contacts(self, search_condition,
-            select_columns='contacts(First Name,Last Name,Email,Contact Type,Email Opt Out,Signed up at,Created Time,Stripe Customer ID,Thinkful login,Phone)', 
-            **kwargs):
+    def search_contacts(self, search_condition, select_columns=SELECT_COLUMNS_CONTACTS, **kwargs):
         if 'Email' in search_condition:
             raise Exception("Save the Zoho tokens! Use search_contacts_by_email!")
         return self.search_records("Contacts", select_columns, search_condition, **kwargs)
-    def search_potentials(self, search_condition,
-            select_columns='potentials(Contact Name,Signed up at,Closing Date,Stage,Lead Source,Exact lead source)', 
-            **kwargs):
+    def search_potentials(self, search_condition, select_columns=SELECT_COLUMNS_POTENTIALS, **kwargs):
         return self.search_records("Potentials", select_columns, search_condition, **kwargs)
 
     def search_by_pdc(self, record_name, select_columns, column_name, column_value, 
@@ -335,8 +323,7 @@ class CRM(Connection):
             "https://crm.zoho.com/crm/private/json/%s/getSearchRecordsByPDC" % (record_name), post_params)
         return self._parse_json_response(response, record_name)
 
-    def search_contacts_by_email(self, email, 
-            select_columns='contacts(First Name,Last Name,Email,Thinkful login,Contact Type,Email Opt Out,Signed up at,Created Time,Stripe Customer ID)'):
+    def search_contacts_by_email(self, email, select_columns=SELECT_COLUMNS_CONTACTS):
         return self.search_by_pdc('Contacts', select_columns, 'email', email)
 
     def delete_record(self, id, parameters={}):
