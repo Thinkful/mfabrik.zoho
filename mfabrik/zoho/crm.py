@@ -138,7 +138,8 @@ class CRM(Connection):
         root = self._xmlize_record(record_name, records)
         post = {
             'newFormat':    1,
-            'duplicateCheck':   2
+            'duplicateCheck':   2,
+            'wfTrigger': 'true',# trigger workflow rules (webhooks)
         }
         post.update(extra_post_parameters)
         response = self.do_xml_call(
