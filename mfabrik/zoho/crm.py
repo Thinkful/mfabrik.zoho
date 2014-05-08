@@ -23,8 +23,8 @@ except ImportError:
 from core import Connection, ZohoException, decode_json
 
 
-SELECT_COLUMNS_POTENTIALS = 'potentials(Contact Name,Signed up at,Closing Date,Course,Stage,Lead Source,Exact lead source,Payer,Discount code)'
-SELECT_COLUMNS_CONTACTS = 'contacts(First Name,Last Name,Email,Contact Type,Email Opt Out,Signed up at,Created Time,Stripe Customer ID,Thinkful login,Phone)'
+SELECT_COLUMNS_POTENTIALS = 'potentials(Potential Owner,Contact Name,Signed up at,Closing Date,Course,Stage,Lead Source,Exact lead source,Payer,Discount code,Send invoice,Learning goals)'
+SELECT_COLUMNS_CONTACTS = 'contacts(Contact Owner,First Name,Last Name,Email,Contact Type,Email Opt Out,Signed up at,Created Time,Stripe Customer ID,Thinkful login,Phone)'
 SELECT_COLUMNS_LEADS = 'leads(Email,First Name,Last Name,Lead Status,Lead Source,Exact lead source,Email Opt Out,Signed up at,Created Time)'
 
 class CRM(Connection):
@@ -286,7 +286,7 @@ class CRM(Connection):
         return self.get_record_by_id(contact_id, "Contacts", select_columns, **kwargs)
     def get_potential_by_id(self, potential_id, select_columns=SELECT_COLUMNS_POTENTIALS, **kwargs):
         return self.get_record_by_id(potential_id, "Potentials", select_columns, **kwargs)
-        
+
     def get_contacts_for_potential(self, potential_id):
         return self.get_related_records('ContactRoles', 'Potentials', potential_id)
     def get_potentials_for_contact(self, contact_id):
