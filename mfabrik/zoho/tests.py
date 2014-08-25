@@ -58,9 +58,6 @@ class TestCRM(unittest.TestCase):
         # Initialize Zoho CRM api connection
         # You get necessary data from Zoho > Setup > Admin > Developer key
         self.crm = CRM(username=self.username, password=self.password, authtoken=self.authtoken, scope="crmapi")
-
-        # Open connection can be used to make as many as possible API calls
-        self.crm.open()
         
         self.clear_test_leads()
         
