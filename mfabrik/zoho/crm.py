@@ -122,6 +122,10 @@ class CRM(Connection):
     def _insert_records(self, record_name, method, records, extra_post_parameters={}):
         """ Insert new records (leads, contacts, etc) to Zoho CRM database.
         
+        NOTE: This method is really about changing records. You can use it to 
+        insert, delete, and update. The `delete_record` and `update_*` methods
+        wrap `_insert_records`.
+
         The contents of the record parameters can be defined in Zoho CRM itself.
         
         http://zohocrmapi.wiki.zoho.com/insertRecords-Method.html
@@ -321,7 +325,8 @@ class CRM(Connection):
     def delete_record(self, record_name, id):
         """ Delete one record from Zoho CRM.
 
-        @param record_name: String type of record
+        @param record_name: String type of record (for instance, 'Contacts' or
+            'Potentials')
         @param id: Record id
         """
         return self._insert_records(
