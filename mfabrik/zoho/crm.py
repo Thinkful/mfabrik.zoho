@@ -318,19 +318,11 @@ class CRM(Connection):
     def search_contacts_by_email(self, email, select_columns=SELECT_COLUMNS_CONTACTS):
         return self.search_by_pdc('Contacts', select_columns, 'email', email)
 
-    def delete_record(self, id, parameters={}):
+    def delete_record(self, record_name, id):
         """ Delete one record from Zoho CRM.
-                        
-        @param id: Record id
-        
-        @param parameters: Extra HTTP post parameters        
-        """
-        
-        post_params = {}
-        post_params["id"] = id
-        post_params.update(parameters)
-        
-        response = self.do_call("https://crm.zoho.com/crm/private/xml/Leads/deleteRecords", post_params)
-        
-        self.check_successful_xml(response)
 
+        @param record_name: String type of record
+        @param id: Record id
+        """
+        return self._insert_records(
+            record_name, 'deleteRecords', [], {'id': str(id)})
