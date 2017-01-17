@@ -24,7 +24,7 @@ from core import Connection, ZohoException, decode_json
 
 
 SELECT_COLUMNS_POTENTIALS = 'potentials(Potential Owner,Contact Name,Signed up at,Closing Date,Course,Potential Type,Stage,Lead Source,Exact lead source,Payer,Discount code,Send invoice,Learning goals,Coding experience,Created Time)'
-SELECT_COLUMNS_CONTACTS = 'contacts(Contact Owner,First Name,Last Name,Email,Contact Type,Email Opt Out,Signed up at,Created Time,Stripe Customer ID,Thinkful login,LinkedIn,Phone)'
+SELECT_COLUMNS_CONTACTS = 'contacts(Contact Owner,First Name,Last Name,Email,Contact Type,Email Opt Out,Signed up at,Created Time,Stripe Customer ID,Thinkful login,LinkedIn,Phone,Locale)'
 SELECT_COLUMNS_LEADS = 'leads(Email,First Name,Last Name,Lead Status,Lead Source,Exact lead source,Email Opt Out,Signed up at,Created Time)'
 
 class CRM(Connection):
